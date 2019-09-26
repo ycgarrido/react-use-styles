@@ -1,5 +1,5 @@
 {
-  "name": "@kamila-labs/use-styles",
+  "name": "@kamila-lab/use-styles",
   "version": "1.0.0",
   "description": "Build dynamic class bassed in css styles for React's components",
   "main": "index.js",
