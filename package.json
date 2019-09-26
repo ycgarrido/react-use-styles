@@ -1,0 +1,27 @@
+{
+  "name": "@kamila-labs/use-styles",
+  "version": "1.0.0",
+  "description": "Build dynamic class bassed in css styles for React's components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ycgarrido/react-use-styles.git"
+  },
+  "keywords": [
+    "react",
+    "style",
+    "functional",
+    "web",
+    "develop",
+    "component"
+  ],
+  "author": "ycgarrido@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ycgarrido/react-use-styles/issues"
+  },
+  "homepage": "https://github.com/ycgarrido/react-use-styles#readme"
+}
