@@ -1,5 +1,20 @@
-import hashBuilder from "./hash";
-import { isBrowser } from "./browser";
+const hashBuilder = content => {
+  if (content) {
+    let hash = 0,
+      i,
+      chr;
+    if (content.length === 0) return hash;
+    for (i = 0; i < content.length; i++) {
+      chr = content.charCodeAt(i);
+      hash = (hash << 5) - hash + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
+  return null;
+};
+
+const isBrowser = () => typeof window !== "undefined";
 
 const isRegisteredClass = className => {
   if (isBrowser()) {
@@ -52,7 +67,7 @@ const appendClass = styles => {
 
 const useStyles = props => {
   let className = props.className || "";
-  const newProps = {};
+  let newProps = {};
   Object.keys(props).map(p => {
     if (p.startsWith("style-hover-")) {
       if (!newProps[":hover"]) newProps[":hover"] = {};
@@ -67,6 +82,7 @@ const useStyles = props => {
       if (!newProps[":disabled"]) newProps[":disabled"] = {};
       newProps[":disabled"][p.substring(15)] = props[p];
     } else if (p.startsWith("style-")) newProps[p.substring(6)] = props[p];
+    else if (p === "style") newProps = Object.assign({}, newProps, props[p]);
   });
   Object.keys(newProps).map(prop => {
     let content = "";
@@ -82,7 +98,7 @@ const useStyles = props => {
     content = content && content !== "{}" ? content : null;
     if (content) {
       if (props.rtl) content = rtl(content);
-      const hash = `fr-class-${hashBuilder(`${prop}${content}`)}`;
+      const hash = `kamila-class-${hashBuilder(`${prop}${content}`)}`;
       let contentClass = `.${hash}`;
       if (prop.startsWith(":")) contentClass += `${prop}${content}`;
       else if (prop.startsWith("@media"))
