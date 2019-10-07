@@ -123,4 +123,4 @@ const rtl = content => {
     .replace(/r-i-g-h-t/g, "right");
 };
 
-export default useStyles;
+module.exports = useStyles;
