@@ -101,7 +101,9 @@ const useStyles = props => {
       const hash = `kamila-class-${hashBuilder(`${prop}${content}`)}`;
       let contentClass = `.${hash}`;
       if (prop.startsWith(":")) contentClass += `${prop}${content}`;
-      else if (prop.startsWith("@media"))
+      else if (prop.startsWith(".") || prop.startsWith("#")) {
+        contentClass += ` ${prop}${content}`;
+      } else if (prop.startsWith("@media"))
         contentClass = `${prop}{.${hash}${content}}`;
       else contentClass += content;
       if (!isRegisteredClass(hash)) {
