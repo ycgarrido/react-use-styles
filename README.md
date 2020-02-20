@@ -23,9 +23,9 @@ import useStyles from "@kamila-lab/use-styles";
 
 // create a custom component
 const MyComponent = props => {
-  const className = useStyles(props);
+  const [className, _props] = useStyles(props);
   return (
-    <div className={className}>
+    <div {..._props} className={className}>
       This is a <span>component</span>
     </div>
   );

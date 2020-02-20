@@ -68,7 +68,9 @@ const appendClass = styles => {
 const useStyles = props => {
   let className = props.className || "";
   let newProps = {};
+  const filteredProps = {};
   Object.keys(props).map(p => {
+    if (p !== "style" && !p.startsWith("style-")) filteredProps[p] = props[p];
     if (p.startsWith("style-hover-")) {
       if (!newProps[":hover"]) newProps[":hover"] = {};
       newProps[":hover"][p.substring(12)] = props[p];
@@ -98,7 +100,7 @@ const useStyles = props => {
     content = content && content !== "{}" ? content : null;
     if (content) {
       if (props.rtl) content = rtl(content);
-      const hash = `kamila-class-${hashBuilder(`${prop}${content}`)}`;
+      const hash = `kc-${hashBuilder(`${prop}${content}`)}`;
       let contentClass = `.${hash}`;
       if (prop.startsWith(":")) contentClass += `${prop}${content}`;
       else if (prop.startsWith(".") || prop.startsWith("#")) {
@@ -114,7 +116,7 @@ const useStyles = props => {
     }
   });
 
-  return className;
+  return [className, filteredProps];
 };
 
 const rtl = content => {
