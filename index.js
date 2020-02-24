@@ -1,3 +1,15 @@
+const ObjectPath = require("object-path");
+
+const THEME_REG_EXP = /@palette\([A-Za-z0-9]+([\.|-][A-Za-z0-9]+)*\)/g;
+const DESIGN_REG_EXP = /@design\([A-Za-z0-9]+([\.|-][A-Za-z0-9]+)*\)/g;
+const PATH_REG_EPX = /\([A-Za-z0-9]+([\.|-][A-Za-z0-9]+)*\)/g;
+
+const isObject = obj =>
+  obj &&
+  typeof obj === "object" &&
+  obj.constructor &&
+  obj.constructor === Object;
+
 const hashBuilder = content => {
   if (content) {
     let hash = 0,
@@ -65,7 +77,38 @@ const appendClass = styles => {
   }
 };
 
-const useStyles = props => {
+const evaluate = (value, theme) => {
+  const { palette = {}, design = {} } = theme;
+  let REG_EXP = [];
+  let themeToken = [];
+  if (DESIGN_REG_EXP.test(value)) {
+    REG_EXP.push(DESIGN_REG_EXP);
+    themeToken.push(design);
+  }
+  if (THEME_REG_EXP.test(value)) {
+    REG_EXP.push(THEME_REG_EXP);
+    themeToken.push(palette);
+  }
+  REG_EXP.map((regExp, i) => {
+    let index = value.match(regExp);
+    const match = [];
+    if (index)
+      index.map(m => {
+        const sub = m.match(PATH_REG_EPX);
+        if (sub && sub[0] && !match.includes(sub[0])) match.push(sub[0]);
+      });
+    match.map(m => {
+      if (m && m.startsWith("(") && m.endsWith(")")) {
+        const pure = m.substring(1, m.length - 1);
+        const r = new RegExp(`@palette\\(${pure}\\)|@design\\(${pure}\\)`, "g");
+        value = value.replace(r, ObjectPath.get(themeToken[i], pure));
+      }
+    });
+  });
+  return value;
+};
+
+const useStyles = (props, theme = {}) => {
   let className = props.className || "";
   let newProps = {};
   const filteredProps = {};
@@ -89,11 +132,15 @@ const useStyles = props => {
   Object.keys(newProps).map(prop => {
     let content = "";
     if (typeof newProps[prop] === "string")
-      content = `${newProps[prop] ? `{${prop}:${newProps[prop]}}` : ""}`;
-    else if (typeof newProps[prop] === "object")
+      content = `${
+        newProps[prop] ? `{${prop}:${evaluate(newProps[prop], theme)}}` : ""
+      }`;
+    else if (isObject(newProps[prop]))
       content = `{${Object.entries(newProps[prop]).reduce(
         (content, [propName, propValue]) =>
-          propValue ? `${content}${propName}:${propValue};` : "",
+          propValue
+            ? `${content}${propName}:${evaluate(propValue, theme)};`
+            : "",
         ""
       )}}`;
 
