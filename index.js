@@ -129,7 +129,11 @@ const useStyles = (props, theme = {}) => {
     } else if (p.startsWith("style-")) newProps[p.substring(6)] = props[p];
     else if (p === "style") newProps = Object.assign({}, newProps, props[p]);
   });
-  Object.keys(newProps).map(prop => {
+  Object.keys(newProps).map(p => {
+    const prop = p
+      .replace(/--space--/g, " ")
+      .replace(/--point--/g, ".")
+      .replace(/--hashtag--/g, "#");
     let content = "";
     if (typeof newProps[prop] === "string")
       content = `${
