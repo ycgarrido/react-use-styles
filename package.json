@@ -1,10 +1,10 @@
 {
   "name": "@kamila-lab/use-styles",
-  "version": "1.1.5",
+  "version": "2.0.0",
   "description": "Build dynamic class bassed in css styles for React's components",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./index.test.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/ycgarrido/react-use-styles#readme",
   "dependencies": {
-    "object-path": "^0.11.4"
-  }
+    "object-path": "^0.11.4",
+    "uuid": "^7.0.2"
+  },
+  "devDependencies": {}
 }

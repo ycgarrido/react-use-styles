@@ -10,8 +10,7 @@ npm i --save @kamila-lab/use-styles
 
 #### Usage
 
-Write css styles like component's prop, writing `style-` prefix and after write the prop css. if you want apply styles in hover, focus, disabled or active states you can write `style-hover-`, `style-focus-`, `style-disabled-`, `style-active-`
-prefixes respectively.
+Write css styles like component's prop, writing `style` into prop object.
 
 #### Example
 
@@ -22,10 +21,10 @@ prefixes respectively.
 import useStyles from "@kamila-lab/use-styles";
 
 // create a custom component
-const MyComponent = props => {
-  const [className, _props] = useStyles(props);
+const MyComponent = {direction,...props} => {
+  const styles = useStyles({ props, direction });
   return (
-    <div {..._props} className={className}>
+    <div {...styles.props} className={styles.className}>
       This is a <span>component</span>
     </div>
   );
@@ -34,40 +33,24 @@ const MyComponent = props => {
 export default MyComponent;
 ```
 
-###### Apply styles with preffix:
+###### Apply styles:
 
 ```js
-// use custom component
-const OtherComponent = () => (
-  <MyComponent
-    style-color="#fff"
-    style-background-color="#075294"
-    style-padding="5px"
-    style-hover-border="1px solid #458CCC !important"
-    style-hover-box-shadow="0 28px 50px rgba(0,0,0,0.16)"
-    style-focus-border="1px solid #458CCC !important"
-  />
-);
-```
-
-###### Apply styles with style prop:
-
-```js
-// use custom component
-const style = {
+// Define style
+const myComponentStyle = {
   color: "#fff",
+  backgroundColor: "#075294",
   padding: "5px",
-  "background-color": "#075294",
-  ":hover": {
+  "&:hover": {
     border: "1px solid #458CCC !important",
-    "box-shadow": "0 28px 50px rgba(0,0,0,0.16)"
+    boxShadow: "0 28px 50px rgba(0,0,0,0.16)"
   },
-  ":focus": {
+  "&:focus": {
     border: "1px solid #458CCC !important"
   }
 };
-
-const OtherComponent = () => <MyComponent style={style} />;
+// use custom component
+const OtherComponent = () => <MyComponent style={myComponentStyle} />;
 ```
 
 ###### Apply styles to nested components:
@@ -77,8 +60,8 @@ const OtherComponent = () => <MyComponent style={style} />;
  * To apply styles to nested components add css selector after state
  */
 const style = {
-  ":hover span": { color: "red" },
-  ":focus span": { color: "red" }
+  "&:hover span": { color: "red" },
+  "&:focus span": { color: "red" }
 };
 
 const OtherComponent = () => <MyComponent style={style} />;
@@ -91,9 +74,52 @@ const OtherComponent = () => <MyComponent style={style} />;
  * To use right to left add a bool prop rtl to componnet
  */
 const style = {
-  "padding-left": "10px",
-  "border-top-left-radius": "30px",
-  "border-bottom-left-radius": "30px"
+  paddingLeft: "10px",
+  borderTopLeftRadius: "30px",
+  borderBottomLeftRadius: "30px"
 };
-const OtherComponent = () => <MyComponent style={style} rtl />;
+const OtherComponent = () => <MyComponent style={style} direction="rtl" />;
+```
+
+#### Media and animations
+
+```js
+const style = {
+  display: "inline-block",
+    position: "relative",
+    width: "80px",
+    height: "80px",
+    "& div": {
+      position: "absolute",
+      border: "4px solid #fff",
+      opacity: 1,
+      borderRadius: "50%",
+      animation: "$lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite"
+    },
+    "& div:nth-child(2)": {
+      animationDelay: "-0.5s"
+    }
+  "@media(max-width:400px)": {
+    paddingLeft: "10px",
+    borderTopLeftRadius: "30px",
+    borderBottomLeftRadius: "30px"
+  },
+  "@keyframes lds-ripple": {
+    "0%": {
+      top: "36px",
+      left: "36px",
+      width: 0,
+      height: 0,
+      opacity: 1
+    },
+    "100%": {
+      top: 0,
+      left: 0,
+      width: "72px",
+      height: "72px",
+      opacity: 0
+    }
+  }
+};
+const OtherComponent = () => <MyComponent style={style} />;
 ```
