@@ -1,5 +1,5 @@
 const ObjectPath = require("object-path");
-const v4 = require("uuid/v4");
+const { v4 } = require("uuid");
 
 const THEME_REG_EXP = /@theme\([A-Za-z0-9]+([\.|-][A-Za-z0-9]+)*\)/g;
 const PATH_REG_EPX = /\([A-Za-z0-9]+([\.|-][A-Za-z0-9]+)*\)/g;

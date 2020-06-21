@@ -1,6 +1,6 @@
 {
   "name": "@kamila-lab/use-styles",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Build dynamic class bassed in css styles for React's components",
   "main": "index.js",
   "scripts": {
