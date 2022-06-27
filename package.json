@@ -26,7 +26,7 @@
   "homepage": "https://github.com/ycgarrido/react-use-styles#readme",
   "dependencies": {
     "object-path": "^0.11.4",
-    "uuid": "^7.0.2"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {}
 }
